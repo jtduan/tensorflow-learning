@@ -2,4 +2,5 @@
 .idea/
 model/
 logs/
-*data/
+data/
+MNIST-data/
