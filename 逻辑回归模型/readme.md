@@ -1,0 +1,4 @@
+tensorflow线性模型
+tensorflow线性模型和全连接网络相结合的代码模板
+
+主要包括如何转化数据并分批传递给tensorflow
