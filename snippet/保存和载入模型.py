@@ -1,35 +1,35 @@
 # coding=utf-8
 import tensorflow as tf
 
-# # 保存模型
-x1 = tf.placeholder(dtype=tf.int32)
-x2 = tf.placeholder(dtype=tf.int32, shape=[2, 3])
-
-v1 = tf.get_variable(name="v1", shape=[2, 3], dtype=tf.int32, initializer=tf.zeros_initializer)
-inc_v1 = v1.assign(v1 + 1)
-
-y_ = tf.placeholder(dtype=tf.int32)
-
-a = x1 + 1
-y = a * x2 + inc_v1
-sess = tf.InteractiveSession()
-sess.run(tf.initialize_all_variables())
-print sess.run(y, feed_dict={x1: 11, x2: [[1, 2, 3], [4, 5, 6]]})
-print sess.run(y, feed_dict={x1: 11, x2: [[1, 2, 3], [4, 5, 6]]})
-
-builder = tf.saved_model.builder.SavedModelBuilder("../model/testModel")
-inputs = {'x1': tf.saved_model.utils.build_tensor_info(x1),
-          'x2': tf.saved_model.utils.build_tensor_info(x2)}
-outputs = {'output': tf.saved_model.utils.build_tensor_info(y)}
-signature = tf.saved_model.signature_def_utils.build_signature_def(inputs, outputs, 'test_sig_name')
-
-outputs2 = {'output': tf.saved_model.utils.build_tensor_info(a)}
-signature2 = tf.saved_model.signature_def_utils.build_signature_def(inputs, outputs2, 'sig_name2')
-
-builder.add_meta_graph_and_variables(sess, ['test_saved_model'],
-                                     signature_def_map={'signature': signature, "signature2": signature2})
-builder.save()
-sess.close()
+# # # 保存模型
+# x1 = tf.placeholder(dtype=tf.int32)
+# x2 = tf.placeholder(dtype=tf.int32, shape=[2, 3])
+#
+# v1 = tf.get_variable(name="v1", shape=[2, 3], dtype=tf.int32, initializer=tf.zeros_initializer)
+# inc_v1 = v1.assign(v1 + 1)
+#
+# y_ = tf.placeholder(dtype=tf.int32)
+#
+# a = x1 + 1
+# y = a * x2 + inc_v1
+# sess = tf.InteractiveSession()
+# sess.run(tf.initialize_all_variables())
+# print sess.run(y, feed_dict={x1: 11, x2: [[1, 2, 3], [4, 5, 6]]})
+# print sess.run(y, feed_dict={x1: 11, x2: [[1, 2, 3], [4, 5, 6]]})
+#
+# builder = tf.saved_model.builder.SavedModelBuilder("../model/testModel")
+# inputs = {'x1': tf.saved_model.utils.build_tensor_info(x1),
+#           'x2': tf.saved_model.utils.build_tensor_info(x2)}
+# outputs = {'output': tf.saved_model.utils.build_tensor_info(y)}
+# signature = tf.saved_model.signature_def_utils.build_signature_def(inputs, outputs, 'test_sig_name')
+#
+# outputs2 = {'output': tf.saved_model.utils.build_tensor_info(a)}
+# signature2 = tf.saved_model.signature_def_utils.build_signature_def(inputs, outputs2, 'sig_name2')
+#
+# builder.add_meta_graph_and_variables(sess, ['test_saved_model'],
+#                                      signature_def_map={'signature': signature, "signature2": signature2})
+# builder.save()
+# sess.close()
 
 
 # 载入模型，输出最终结果或中间结果(前提已经起名字了)
