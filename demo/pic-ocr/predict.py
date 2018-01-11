@@ -27,17 +27,15 @@ if __name__ == '__main__':
     x1 = sess.graph.get_tensor_by_name(x_tensor_name1)
     x2 = sess.graph.get_tensor_by_name(x_tensor_name2)
     y = sess.graph.get_tensor_by_name(y_tensor_name)
-    # print "获取原始图中的变量", sess.run(sess.graph.get_tensor_by_name("v1:0"))
-    # _x 实际输入待inference的data
     # img = generateRect()  # 2
-    img = generateCircle()  # 1
-    # img = generateTrig()  # 0
+    # img = generateCircle()  # 1
+    img, label = generateRamdomNumber(5)  # 0
+    print label
     img2 = preprocess(img)
     img3 = tf.expand_dims(img2, 0)
     img3 = sess.run(img3)
-    # Image.fromarray(val[0]).save("./temp/aa.bmp")
     saver = tf.train.Saver()
-    saver.save(sess,"./temp/model")
+    saver.save(sess, "./temp/model2/")
 
     print sess.run(y, feed_dict={x1: img3, x2: 1.0})  ##根据输入执行输出
     sess.close()
