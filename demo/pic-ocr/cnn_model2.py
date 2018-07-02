@@ -54,7 +54,6 @@ class cnn_model(object):
             act4 = tf.nn.relu(conv4 + b4)
             pool4 = tf.nn.max_pool(act4, ksize=[1, 2, 2, 1], strides=[1, 2, 2, 1], padding='SAME')
             pool4 = tf.nn.dropout(pool4, self.keep_prob)
-
         with tf.name_scope("dense"):
             fc = tf.layers.dense(tf.layers.flatten(pool4), 512, name='dense')
             fc = tf.contrib.layers.dropout(fc, self.keep_prob)

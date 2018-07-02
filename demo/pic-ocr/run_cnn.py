@@ -32,25 +32,26 @@ if __name__ == '__main__':
 
         saver = tf.train.Saver()
         # saver.restore(sess, "./temp/model2/")
-        for epoch in range(300):
+        for epoch in range(1):
             x, y_ = sess.run([img_batch, label_batch])
-            train_step, loss = sess.run([model.train_step, model.loss],
-                                        feed_dict={model.x: x, model.y_: y_, model.keep_prob: 0.75})
-            if (epoch % 10 == 1):
-                test_x, test_y_ = sess.run([test_img_batch, test_label_batch])
-                y_pred_cls, acc = sess.run([model.y_pred_cls, model.acc],
-                                           feed_dict={model.x: test_x, model.y_: test_y_, model.keep_prob: 1})
-                print("epoch %d ,acc=%f,loss=%f" % (epoch, acc, loss))
-                if (acc > 0.95):
-                    builder = tf.saved_model.builder.SavedModelBuilder("./temp/model/outModel")
-                    inputs = {'input_x': tf.saved_model.utils.build_tensor_info(model.x),
-                              'keep_prob': tf.saved_model.utils.build_tensor_info(model.keep_prob)}
-                    outputs = {'output': tf.saved_model.utils.build_tensor_info(model.y_pred_cls)}
-                    signature = tf.saved_model.signature_def_utils.build_signature_def(inputs, outputs, 'classify_demo')
-                    builder.add_meta_graph_and_variables(sess, ['classify_demo_model'],
-                                                         signature_def_map={'signature': signature})
-                    builder.save()
-                    break
-        saver.save(sess, "./temp/model/")
+            train_step, loss, temp = sess.run([model.train_step, model.loss, model.temp],
+                                              feed_dict={model.x: x, model.y_: y_, model.keep_prob: 0.75})
+            print temp.shape
+            # if (epoch % 10 == 1):
+            #     test_x, test_y_ = sess.run([test_img_batch, test_label_batch])
+            #     y_pred_cls, acc = sess.run([model.y_pred_cls, model.acc],
+            #                                feed_dict={model.x: test_x, model.y_: test_y_, model.keep_prob: 1})
+            #     print("epoch %d ,acc=%f,loss=%f" % (epoch, acc, loss))
+            #     if (acc > 0.95):
+            #         builder = tf.saved_model.builder.SavedModelBuilder("./temp/model/outModel")
+            #         inputs = {'input_x': tf.saved_model.utils.build_tensor_info(model.x),
+            #                   'keep_prob': tf.saved_model.utils.build_tensor_info(model.keep_prob)}
+            #         outputs = {'output': tf.saved_model.utils.build_tensor_info(model.y_pred_cls)}
+            #         signature = tf.saved_model.signature_def_utils.build_signature_def(inputs, outputs, 'classify_demo')
+            #         builder.add_meta_graph_and_variables(sess, ['classify_demo_model'],
+            #                                              signature_def_map={'signature': signature})
+            #         builder.save()
+            #         break
+        # saver.save(sess, "./temp/model/")
         coord.request_stop()
         coord.join(threads)
